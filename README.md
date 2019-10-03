@@ -1,5 +1,10 @@
 ### Local Development Helper for Laravel using Nginx / PHP 7.3 / Self Signed Certificates
 
+## Required
+-   https://github.com/FiloSottile/mkcert :: Awesome easy to use go package to generate certs and sign them to your local store.
+
+
+
 Found myself doing this way too often, so I decided to learn bash and setup a script to automate it.
 
 Fairly easy to use, just ` ./create.sh `
