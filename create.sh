@@ -30,6 +30,7 @@ function movessl() {
                 {
                     sudo mv "$file" "/etc/ssl/$proj.key"
                 } || {
+                    clear
                     echo -e "\nERROR:\t${RED}Failed to move SSL's key file!"
                     exit
                 }
@@ -40,6 +41,7 @@ function movessl() {
                 {
                     sudo mv "$file" "/etc/ssl/$proj.pem"
                 } || {
+                    clear
                     echo -e "\nERROR:\t${RED}Failed to move SSL's pem file!"
                     exit
                 }
@@ -70,6 +72,7 @@ select opt in $OPTIONS; do
         {
             mkcert -install "$proj" ""*.$proj""
         } || {
+            clear
             echo -e "\nERROR:\t${RED}Failed to create certs with mkcert"
             exit
         }
@@ -103,15 +106,18 @@ select opt in $OPTIONS; do
     sudo ln -s "/etc/nginx/sites-available/$proj" "/etc/nginx/sites-enabled/$proj"
 
 
+    clear
     echo "==============================================="
     echo ""
     echo -e "Successfully created ${RED}$proj${NC}'s nginx files/certs!\n"
-    echo -e "Your certs are listed below:\n"
-    echo -e "${YLW}Key:${NC}\t/etc/ssl/$proj.key"
-    echo -e "${YLW}Pem:${NC}\t/etc/ssl/$proj.pem"
-    echo -e ""
+    if [[ $filename == "nginxssl" ]]; then
+        echo -e "Your certs are listed below:\n"
+        echo -e "${YLW}Key:${NC}\t/etc/ssl/$proj.key"
+        echo -e "${YLW}Pem:${NC}\t/etc/ssl/$proj.pem"
+        echo -e ""
+    fi
     echo -e "Your nginx file is:\n"
-    echo -e "/etc/nginx/sites-available/${BLUE}$proj${NC}"
+    echo -e "/etc/nginx/${BLUE}sites-available${NC}/$proj"
     echo ""
     echo "==============================================="
     
@@ -125,11 +131,11 @@ select opt in $OPTIONS; do
 
     if [[ $found == 0 ]]; then
         echo ""
-        echo "==============================================="
-        echo -e "Appended to /etc/hosts with new domain:\n"
+        echo -e "Appended to ${YLW}/etc/hosts${NC} with new domain:\n"
         echo -e "127.0.0.1\t$proj" | sudo tee -a /etc/hosts
         echo ""
         echo "==============================================="
     fi
+    exit
 
 done
