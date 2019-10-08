@@ -28,7 +28,7 @@ function movessl() {
         if [[ -f $file ]]; then
             if [[ $file == *"key.pem" && $file == *"$proj"* ]]; then
                 {
-                    sudo mv "$file" "/etc/ssl/$proj.key"
+                    sudo mv "$DIR/$file" "/etc/ssl/$proj.key"
                 } || {
                     clear
                     echo -e "\nERROR:\t${RED}Failed to move SSL's key file!"
@@ -39,7 +39,7 @@ function movessl() {
 
             if [[ $file == *".pem" && $file == *"$proj"* ]]; then
                 {
-                    sudo mv "$file" "/etc/ssl/$proj.pem"
+                    sudo mv "$DIR/$file" "/etc/ssl/$proj.pem"
                 } || {
                     clear
                     echo -e "\nERROR:\t${RED}Failed to move SSL's pem file!"
@@ -52,6 +52,7 @@ function movessl() {
 }
 
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 filename='nginxssl'
 
 
@@ -72,7 +73,6 @@ select opt in $OPTIONS; do
         {
             mkcert -install "$proj" ""*.$proj""
         } || {
-            clear
             echo -e "\nERROR:\t${RED}Failed to create certs with mkcert"
             exit
         }
@@ -102,9 +102,9 @@ select opt in $OPTIONS; do
     done
     IFS=$old_IFS # restore default field separator
 
-    sudo mv "$proj" "/etc/nginx/sites-available/$proj"
+    sudo mv "$DIR/$proj" "/etc/nginx/sites-available/$proj"
     sudo ln -s "/etc/nginx/sites-available/$proj" "/etc/nginx/sites-enabled/$proj"
-
+    ngxres
 
     clear
     echo "==============================================="
