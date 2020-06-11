@@ -136,6 +136,8 @@ select opt in $OPTIONS; do
         echo ""
         echo "==============================================="
     fi
+
+    ngxres
     exit
 
 done
